@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class RecipesApiProvider {
-  static var uri = "";
+  static var uri = "https://api.edamam.com/api/recipes/v2?type=public&q=m&app_id=013b4faf&app_key=030959077364a664b34c191cd3a687fd&fbclid=IwAR3RoTSrreI3W31uu1mI7uQ-1bee1h5o1HxGUYGvdtlZ6kQqvyLUiBdlgrA";
+  final successCode = 200;
 
   static Future<List<Recipe>> fetchRecipe() async {
     final response = await http.get(Uri.parse(uri));
@@ -17,6 +18,23 @@ class RecipesApiProvider {
 
     return Recipe.recipesFromSnapshot(_temp);
   }
+
+  List<Recipe> parseResponse(http.Response response) {
+    final responseString = jsonDecode(response.body);
+
+    if (response.statusCode == successCode) {
+      return responseString;
+    } else {
+      throw Exception('failed to load players');
+    }
+  }
+
+  Future<List<Recipe>> fetchRecipesByName(String name) async {
+    final response = await http.get(Uri.parse(uri));
+
+    return parseResponse(response);
+  }
+
 }
 
 // Used as a mock data provider
