@@ -1,12 +1,12 @@
+import 'package:calorie_rush_project/viewModel/network/recipes_api.dart';
 import 'package:flutter/material.dart';
 import 'package:calorie_rush_project/model/recipe.dart';
+import 'bmi_calculator/age_widget.dart';
 import 'details.dart';
-import 'package:calorie_rush_project/model/recipe_bloc.dart';
 import 'dart:math';
-import 'package:calorie_rush_project/bmi_calculator/age_widget.dart';
-import 'package:calorie_rush_project/bmi_calculator/gender_widget.dart';
-import 'package:calorie_rush_project/bmi_calculator/height_widget.dart';
-import 'package:calorie_rush_project/bmi_calculator/score_screen.dart';
+import 'package:calorie_rush_project/view/bmi_calculator/gender_widget.dart';
+import 'package:calorie_rush_project/view/bmi_calculator/height_widget.dart';
+import 'package:calorie_rush_project/view/bmi_calculator/score_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
 
@@ -61,6 +61,8 @@ class _MyHomePageState extends State<MyHomePage>
   void calculateBmi() {
     _bmiScore = _weight / pow(_height / 100, 2);
   }
+
+  String? textValue;
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +157,8 @@ class _MyHomePageState extends State<MyHomePage>
                                   //Calculate BMI here
                                   calculateBmi();
 
-                                  Future.delayed(Duration(seconds: 1), () {
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
                                     setState(() {
                                       _isFinished = true;
                                     });
@@ -181,7 +184,9 @@ class _MyHomePageState extends State<MyHomePage>
                         height: 20,
                       ),
                       TextField(
-                        onChanged: (value) => _runFilter(value),
+                        onChanged: (value) {
+                          textValue = value;
+                        },
                         decoration: const InputDecoration(
                           labelText: 'Search',
                           suffixIcon: Icon(Icons.search),

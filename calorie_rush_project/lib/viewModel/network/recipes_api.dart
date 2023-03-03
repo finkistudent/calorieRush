@@ -30,9 +30,8 @@ class RecipesApiProvider {
   }
 
   Future<List<Recipe>> fetchRecipesByName(String name) async {
-    final response = await http.get(Uri.parse(uri));
-
-    return parseResponse(response);
+    var response = await fetchRecipe();
+    return response.where((element) => element.name == name).toList();
   }
 
 }
