@@ -1,9 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.calorie_rush_project">
-   <application
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
+    <application
         android:label="calorie_rush_project"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCh6RyGC4Cm9ffQzKDKHzc-psF-qRiDzzQ" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

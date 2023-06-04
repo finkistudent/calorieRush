@@ -3,6 +3,7 @@ class Recipe {
   String description;
   String image;
   List<String> healthLabels;
+  double quantity;
   bool isFavorite;
 
   Recipe(
@@ -10,6 +11,7 @@ class Recipe {
       required this.description,
       required this.image,
       required this.healthLabels,
+        required this.quantity,
       this.isFavorite = false});
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class Recipe {
       description: desc,
       healthLabels: labels,
       image: json['image'] ?? alternativeImageUrl,
+      quantity: json['totalNutrients']['ENERC_KCAL']['quantity']
     );
   }
 

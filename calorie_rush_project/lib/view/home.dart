@@ -1,3 +1,6 @@
+import 'package:calorie_rush_project/view/camera_tab.dart';
+import 'package:calorie_rush_project/view/favorites_screen.dart';
+import 'package:calorie_rush_project/view/map_screen.dart';
 import 'package:calorie_rush_project/viewModel/network/recipes_api.dart';
 import 'package:flutter/material.dart';
 import 'package:calorie_rush_project/model/recipe.dart';
@@ -9,6 +12,7 @@ import 'package:calorie_rush_project/view/bmi_calculator/height_widget.dart';
 import 'package:calorie_rush_project/view/bmi_calculator/score_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
+import 'package:camera/camera.dart';
 
 class MyHomePage extends StatefulWidget {
   final List<Recipe> recipes;
@@ -42,20 +46,31 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    initCamera();
+    _tabController = TabController(length: 5, vsync: this);
   }
 
-  void _runFilter(String entered) {
-    List<Map<Recipe, dynamic>> results = [];
-    if (entered.isEmpty) {
-      results = _allRecipies;
-    } else {
-      var x = _allRecipies;
-      results = x
-          .where((recipe) =>
-              recipe["name"].toLowerCase().contains(entered.toLowerCase()))
-          .toList();
-    }
+  @override
+  void dispose() {
+    cameraController.dispose();
+    super.dispose();
+  }
+
+  late List<CameraDescription> cameras;
+  late CameraController cameraController;
+
+  Future<void> initCamera() async {
+    cameras = await availableCameras();
+    cameraController =
+        CameraController(cameras[0], ResolutionPreset.high, enableAudio: false);
+    await cameraController.initialize().then((value) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    }).catchError((error) {
+      print(error);
+    });
   }
 
   void calculateBmi() {
@@ -154,9 +169,7 @@ class _MyHomePageState extends State<MyHomePage>
                                   });
                                 },
                                 onWaitingProcess: () {
-                                  //Calculate BMI here
                                   calculateBmi();
-
                                   Future.delayed(const Duration(seconds: 1),
                                       () {
                                     setState(() {
@@ -273,28 +286,12 @@ class _MyHomePageState extends State<MyHomePage>
                     ],
                   ),
                 ),
-                ListView.builder(
-                  itemCount: widget.favoriteRecipes.length,
-                  itemBuilder: (context, index) {
-                    Recipe recipe = widget.favoriteRecipes[index];
-                    return ListTile(
-                      title: Text(recipe.name),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RecipeScreen(recipe: recipe),
-                          ),
-                        );
-                      },
-                      trailing: IconButton(
-                        icon: const Icon(Icons.favorite,
-                            color: Colors.pinkAccent),
-                        onPressed: () => widget.toggleFavorite(recipe),
-                      ),
-                    );
-                  },
+                FavoritesScreen(
+                  favoriteRecipes: widget.favoriteRecipes,
+                  toggleFavorite: widget.toggleFavorite,
                 ),
+                FourthTab(),
+                MapView(),
               ],
             ),
       bottomNavigationBar: Material(
@@ -321,6 +318,18 @@ class _MyHomePageState extends State<MyHomePage>
               Icons.favorite,
               color: Colors.white,
             )),
+            Tab(
+              icon: Icon(
+                Icons.camera_alt,
+                color: Colors.white,
+              ),
+            ),
+            Tab(
+              icon: Icon(
+                Icons.location_pin,
+                color: Colors.white,
+              ),
+            ),
           ],
         ),
       ),

@@ -46,24 +46,28 @@ class RecipesListProvider {
           name: 'Spaghetti Bolognese',
           description: 'A classic Italian pasta dish.',
           healthLabels: [],
-          image: url),
+          image: url,
+          quantity: 0),
       Recipe(
           name: 'Pad Thai',
           description: 'A popular Thai stir-fried noodle dish.',
           healthLabels: [],
-          image: url),
+          image: url,
+          quantity: 0),
       Recipe(
           name: 'Tacos',
           description:
               'A Mexican dish consisting of a tortilla filled with various ingredients.',
           healthLabels: [],
-          image: url),
+          image: url,
+          quantity: 0),
       Recipe(
           name: 'Pizza',
           description:
               'A savory Italian dish that is typically round and flat.',
           healthLabels: [],
-          image: url),
+          image: url,
+          quantity: 0),
     ];
   }
 }

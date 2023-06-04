@@ -61,7 +61,14 @@ class RecipeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 30.0),
+            Text(
+                'This food contains  ${recipe.quantity.toStringAsFixed(2)} kcal.',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.lightGreen,
+                )),
           ],
         ),
       ),
