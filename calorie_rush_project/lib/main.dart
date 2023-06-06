@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'model/recipe.dart';
 import 'package:calorie_rush_project/view/home.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +33,15 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     FlutterNativeSplash.remove();
+    loadCustomFont();
     fetchRecipes();
+  }
+
+  Future<void> loadCustomFont() async {
+    await Future.wait([
+      rootBundle.load('fonts/PoltawskiNowy-VariableFont_wght.ttf'),
+    ]);
+    setState(() {});
   }
 
   void toggleFavorite(Recipe recipe) {
@@ -52,6 +61,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'CalorieRush',
       theme: ThemeData(
+          fontFamily: 'PoltawskiNowy',
           colorScheme: ColorScheme.fromSwatch()
               .copyWith(primary: Colors.lightGreen[300])),
       home: MyHomePage(
