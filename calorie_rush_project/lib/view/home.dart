@@ -152,38 +152,27 @@ class _MyHomePageState extends State<MyHomePage>
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 20, horizontal: 60),
-                            child: SwipeableButtonView(
-                                isFinished: _isFinished,
-                                onFinish: () async {
-                                  await Navigator.push(
-                                      context,
-                                      PageTransition(
-                                          child: ScoreScreen(
-                                            bmiScore: _bmiScore,
-                                            age: _age,
-                                          ),
-                                          type: PageTransitionType.fade));
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                calculateBmi();
+                                await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    child: ScoreScreen(
+                                      bmiScore: _bmiScore,
+                                      age: _age,
+                                    ),
+                                    type: PageTransitionType.fade,
+                                  ),
+                                );
 
-                                  setState(() {
-                                    _isFinished = false;
-                                  });
-                                },
-                                onWaitingProcess: () {
-                                  calculateBmi();
-                                  Future.delayed(const Duration(seconds: 1),
-                                      () {
-                                    setState(() {
-                                      _isFinished = true;
-                                    });
-                                  });
-                                },
-                                activeColor: Colors.lightGreen,
-                                buttonWidget: const Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  color: Colors.black,
-                                ),
-                                buttonText: "CALCULATE"),
-                          )
+                                setState(() {
+                                  _isFinished = false;
+                                });
+                              },
+                              child: const Text('CALCULATE'),
+                            ),
+                          ),
                         ],
                       ),
                     ),
